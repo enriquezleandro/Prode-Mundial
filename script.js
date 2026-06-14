@@ -79,6 +79,15 @@ const matches = [
       "leandro enriquez": [2, 1], "José Pahr": [1, 0], "Sergio Villar": [1, 0],
       "Ezequiel Villalba": [0, 2], "Facundo Stij": [0, 2], "Arturo Fabian Krauchuka": [1, 2]
     }
+  },
+  {
+    home: { code: "GER", name: "Alemania", iso: "de" },
+    away: { code: "CUW", name: "Curazao", iso: "cw" },
+    result: [7, 1],
+    predictions: {
+      "Ezequiel Villalba": [4, 0], "leandro enriquez": [3, 1], "José Pahr": [4, 0],
+      "Sergio Villar": [4, 0], "Arturo Fabian Krauchuka": [0, 1], "Facundo Stij": null
+    }
   }
 ];
 
