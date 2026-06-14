@@ -88,6 +88,15 @@ const matches = [
       "Ezequiel Villalba": [4, 0], "leandro enriquez": [3, 1], "José Pahr": [4, 0],
       "Sergio Villar": [4, 0], "Arturo Fabian Krauchuka": [0, 1], "Facundo Stij": null
     }
+  },
+  {
+    home: { code: "NED", name: "Países Bajos", iso: "nl" },
+    away: { code: "JPN", name: "Japón", iso: "jp" },
+    result: [2, 2],
+    predictions: {
+      "Ezequiel Villalba": [1, 1], "Facundo Stij": [2, 1], "leandro enriquez": [2, 1],
+      "Arturo Fabian Krauchuka": [1, 2], "José Pahr": [0, 1], "Sergio Villar": [1, 0]
+    }
   }
 ];
 
