@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prode Mundial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand-text">
+      <h1>Prode Mundial</h1>
+    </div>
+
+    <div class="header-right">
+      <div class="progress">
+        <div class="progress-top">
+          <span class="progress-count" id="progressCount">0</span>
+          <span class="progress-total">/ 104 partidos</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Cambiar tema" aria-label="Cambiar tema">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="tabs">
+    <div class="segmented">
+      <button class="seg-btn active" data-view="estadisticas">Estadísticas</button>
+      <button class="seg-btn" data-view="partidos">Partidos</button>
+    </div>
+  </div>
+
+  <!-- ===== ESTADÍSTICAS ===== -->
+  <div class="view active" id="view-estadisticas">
+    <section>
+      <h2 class="section-title">Evolución de puntos acumulados</h2>
+      <div class="chart-card">
+        <div class="legend" id="legend"></div>
+        <svg class="chart-svg" id="chart" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Tabla de posiciones</h2>
+      <div class="leaderboard" id="leaderboard"></div>
+    </section>
+  </div>
+
+  <!-- ===== PARTIDOS ===== -->
+  <div class="view" id="view-partidos">
+    <section>
+      <div class="search-box">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="search" placeholder="Buscar partido por país (ej: brasil, korea, USA)…" autocomplete="off">
+      </div>
+      <div id="matches"></div>
+      <div class="no-results" id="noResults" style="display:none;">No se encontraron partidos para tu búsqueda.</div>
+    </section>
+  </div>
+
+  <footer id="footer"></footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
