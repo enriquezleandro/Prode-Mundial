@@ -325,7 +325,8 @@ function renderMatches(filter = "") {
   container.innerHTML = "";
   let shown = 0;
 
-  matches.forEach(m => {
+  // orden invertido: el último partido cargado aparece primero
+  [...matches].reverse().forEach(m => {
     const haystack = [m.home.code, m.away.code, m.home.name, m.away.name].join(" ").toLowerCase();
     if (q && !haystack.includes(q)) return;
     shown++;
