@@ -106,6 +106,15 @@ const matches = [
       "Ezequiel Villalba": [1, 2], "Facundo Stij": [1, 1], "leandro enriquez": [1, 2],
       "Arturo Fabian Krauchuka": null, "José Pahr": [1, 1], "Sergio Villar": [1, 2]
     }
+  },
+  {
+    home: { code: "SWE", name: "Suecia", iso: "se" },
+    away: { code: "TUN", name: "Túnez", iso: "tn" },
+    result: [5, 1],
+    predictions: {
+      "Ezequiel Villalba": [2, 0], "Facundo Stij": [2, 0], "leandro enriquez": [2, 1],
+      "José Pahr": [1, 0], "Sergio Villar": [1, 0], "Arturo Fabian Krauchuka": [1, 1]
+    }
   }
 ];
 
