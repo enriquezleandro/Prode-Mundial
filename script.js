@@ -115,6 +115,15 @@ const matches = [
       "Ezequiel Villalba": [2, 0], "Facundo Stij": [2, 0], "leandro enriquez": [2, 1],
       "José Pahr": [1, 0], "Sergio Villar": [1, 0], "Arturo Fabian Krauchuka": [1, 1]
     }
+  },
+  {
+    home: { code: "ESP", name: "España", iso: "es" },
+    away: { code: "CPV", name: "Cabo Verde", iso: "cv" },
+    result: [0, 0],
+    predictions: {
+      "Ezequiel Villalba": [6, 0], "Facundo Stij": [3, 0], "leandro enriquez": [4, 0],
+      "Arturo Fabian Krauchuka": [2, 0], "José Pahr": [2, 0], "Sergio Villar": [2, 1]
+    }
   }
 ];
 
