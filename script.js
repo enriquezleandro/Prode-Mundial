@@ -249,7 +249,10 @@ function renderLegend() {
 }
 
 /* ---------- Tabla de posiciones ---------- */
-function renderLeaderboard() {
+/* Posiciones compartidas por tabla y footer.
+   Desempate: 1) puntos  2) más plenos  3) más aciertos de ganador.
+   Si todo es igual, comparten la misma posición (empate real). */
+function computeStandings() {
   const totals = PARTICIPANTS.map(p => {
     let pts = 0, full = 0, winner = 0, miss = 0;
     matches.forEach(m => {
@@ -264,12 +267,23 @@ function renderLeaderboard() {
     });
     return { name: p.name, pts, full, winner, miss };
   });
-  totals.sort((a, b) => b.pts - a.pts || b.full - a.full || a.name.localeCompare(b.name));
+  totals.sort((a, b) =>
+    b.pts - a.pts || b.full - a.full || b.winner - a.winner || a.name.localeCompare(b.name)
+  );
+  totals.forEach((t, i) => {
+    const prev = totals[i - 1];
+    const tie = prev && t.pts === prev.pts && t.full === prev.full && t.winner === prev.winner;
+    t.rank = tie ? prev.rank : i + 1;
+  });
+  return totals;
+}
 
-  const medal = ["gold", "silver", "bronze"];
-  document.getElementById("leaderboard").innerHTML = totals.map((t, i) => `
-    <div class="lb-row ${medal[i] || ""}">
-      <div class="lb-rank">${i + 1}</div>
+function renderLeaderboard() {
+  const totals = computeStandings();
+  const medal = { 1: "gold", 2: "silver", 3: "bronze" };
+  document.getElementById("leaderboard").innerHTML = totals.map(t => `
+    <div class="lb-row ${medal[t.rank] || ""}">
+      <div class="lb-rank">${t.rank}</div>
       <div class="lb-name">${t.name}</div>
       <div class="lb-stats">
         <div class="stat"><span class="stat-num c-full">${t.full}</span><span class="stat-lbl">Pleno</span></div>
@@ -285,31 +299,31 @@ function renderLeaderboard() {
 function renderFooter() {
   const played = matches.filter(m => m.result !== null);
 
-  // ranking para el líder
-  const totals = PARTICIPANTS.map(p => {
-    let pts = 0, full = 0;
-    played.forEach(m => {
-      const got = pointsFor(m.predictions[p.name], m.result);
-      pts += got;
-      if (got === 3) full++;
-    });
-    return { name: p.name, pts, full };
-  }).sort((a, b) => b.pts - a.pts || b.full - a.full);
-
-  const leader = totals[0];
+  // mismas posiciones que la tabla
+  const totals = computeStandings();
+  const leaders = totals.filter(t => t.rank === 1);
+  const top = leaders[0];
   const totalPlenos = totals.reduce((s, t) => s + t.full, 0);
   const totalPuntos = totals.reduce((s, t) => s + t.pts, 0);
 
   // goles totales convertidos en los partidos jugados
   const goles = played.reduce((s, m) => s + m.result[0] + m.result[1], 0);
 
+  const leaderCard = leaders.length > 1
+    ? `<div class="foot-card">
+        <div class="fc-lbl">Líderes (empate)</div>
+        <div class="fc-val">${leaders.map(l => l.name).join(" · ")}</div>
+        <div class="fc-sub">${top.pts} pts · ${top.full} plenos</div>
+      </div>`
+    : `<div class="foot-card">
+        <div class="fc-lbl">Líder</div>
+        <div class="fc-val">${top.name}</div>
+        <div class="fc-sub">${top.pts} pts · ${top.full} plenos</div>
+      </div>`;
+
   document.getElementById("footer").innerHTML = `
     <div class="foot-grid">
-      <div class="foot-card">
-        <div class="fc-lbl">Líder</div>
-        <div class="fc-val">${leader.name}</div>
-        <div class="fc-sub">${leader.pts} pts · ${leader.full} plenos</div>
-      </div>
+      ${leaderCard}
       <div class="foot-card">
         <div class="fc-lbl">Partidos jugados</div>
         <div class="fc-val">${played.length} / ${TOTAL_PARTIDOS}</div>
