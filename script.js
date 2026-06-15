@@ -97,6 +97,15 @@ const matches = [
       "Ezequiel Villalba": [1, 1], "Facundo Stij": [2, 1], "leandro enriquez": [2, 1],
       "Arturo Fabian Krauchuka": [1, 2], "José Pahr": [0, 1], "Sergio Villar": [1, 0]
     }
+  },
+  {
+    home: { code: "CIV", name: "Costa de Marfil", iso: "ci" },
+    away: { code: "ECU", name: "Ecuador", iso: "ec" },
+    result: [1, 0],
+    predictions: {
+      "Ezequiel Villalba": [1, 2], "Facundo Stij": [1, 1], "leandro enriquez": [1, 2],
+      "Arturo Fabian Krauchuka": null, "José Pahr": [1, 1], "Sergio Villar": [1, 2]
+    }
   }
 ];
 
