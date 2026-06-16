@@ -151,6 +151,15 @@ const matches = [
       "Arturo Fabian Krauchuka": [1, 1], "Ezequiel Villalba": [1, 0], "Facundo Stij": [2, 0],
       "leandro enriquez": [2, 0], "José Pahr": [0, 1], "Sergio Villar": [0, 1]
     }
+  },
+  {
+    home: { code: "FRA", name: "Francia", iso: "fr" },
+    away: { code: "SEN", name: "Senegal", iso: "sn" },
+    result: [3, 1],
+    predictions: {
+      "Facundo Stij": [3, 1], "leandro enriquez": [3, 1], "Ezequiel Villalba": [2, 1],
+      "Arturo Fabian Krauchuka": [3, 0], "José Pahr": [2, 0], "Sergio Villar": [2, 0]
+    }
   }
 ];
 
