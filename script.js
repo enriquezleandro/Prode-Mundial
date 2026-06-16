@@ -230,14 +230,15 @@ function renderChart() {
   const n = played.length;
   const win = Math.min(n, CHART_WINDOW);
   const maxOffset = Math.max(0, n - win);
-  if (chartOffset === null || chartOffset > maxOffset) chartOffset = maxOffset; // por defecto, los últimos
-  const off = chartOffset;
+  // offset fraccionado para un deslizamiento continuo (por defecto, los últimos)
+  if (chartOffset === null || chartOffset > maxOffset) chartOffset = maxOffset;
+  const off = Math.max(0, Math.min(chartOffset, maxOffset));
 
   const W = 1000, H = 560, padL = 46, padR = 24, padT = 24, padB = 46;
   const plotW = W - padL - padR, plotH = H - padT - padB;
-  const xStep = win > 1 ? plotW / (win - 1) : 0;
+  const step = win > 1 ? plotW / (win - 1) : 0;
 
-  // serie acumulada sobre TODOS los partidos jugados (para que el acumulado sea correcto)
+  // serie acumulada sobre TODOS los partidos jugados (acumulado correcto)
   const series = PARTICIPANTS.map(p => {
     let acc = 0;
     const pts = played.map(m => { acc += pointsFor(m.predictions[p.name], m.result); return acc; });
@@ -246,33 +247,44 @@ function renderChart() {
 
   const maxData = Math.max(10, ...series.map(s => s.total));
   const maxY = Math.ceil(maxData / 2) * 2;
-  const xFor = i => padL + i * xStep;
+  const xFor = j => padL + (j - off) * step;          // posición global desplazada por el offset
   const yFor = v => padT + plotH - (v / maxY) * plotH;
-  const visMatches = played.slice(off, off + win);
+  const inView = x => x >= padL - 0.5 && x <= W - padR + 0.5;
 
   let svg = "";
+  // grilla y eje Y (fijos)
   for (let v = 0; v <= maxY; v += 2) {
     const y = yFor(v);
     svg += `<line class="gridline" x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}"/>`;
     svg += `<text x="${padL - 10}" y="${y + 4}" text-anchor="end">${v}</text>`;
   }
   svg += `<line class="axis" x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT + plotH}"/>`;
-  visMatches.forEach((m, i) => {
-    svg += `<text x="${xFor(i)}" y="${H - padB + 26}" text-anchor="middle" font-size="12">${m.home.code}-${m.away.code}</text>`;
+
+  // etiquetas X (solo las que entran en la ventana)
+  played.forEach((m, j) => {
+    const x = xFor(j);
+    if (inView(x)) svg += `<text x="${x.toFixed(1)}" y="${H - padB + 26}" text-anchor="middle" font-size="12">${m.home.code}-${m.away.code}</text>`;
   });
+
+  // recorte del área de ploteo para que las líneas entren/salgan suaves
+  svg += `<defs><clipPath id="plotClip"><rect x="${padL}" y="${padT - 8}" width="${plotW}" height="${plotH + 16}"/></clipPath></defs>`;
+  svg += `<g clip-path="url(#plotClip)">`;
   series.forEach(s => {
     if (!visible[s.name]) return;
-    const coords = s.pts.slice(off, off + win).map((v, i) => [xFor(i), yFor(v)]);
+    const coords = s.pts.map((v, j) => [xFor(j), yFor(v)]);
     svg += `<path d="${smoothPath(coords)}" fill="none" stroke="${s.color}" stroke-width="3"
             stroke-linejoin="round" stroke-linecap="round"/>`;
   });
   series.forEach(s => {
     if (!visible[s.name]) return;
-    s.pts.slice(off, off + win).forEach((v, i) => {
-      svg += `<circle cx="${xFor(i)}" cy="${yFor(v)}" r="5" fill="${s.color}">
-              <title>${s.name} · ${visMatches[i].home.code}-${visMatches[i].away.code}: ${v} pts</title></circle>`;
+    s.pts.forEach((v, j) => {
+      const x = xFor(j);
+      if (!inView(x)) return;
+      svg += `<circle cx="${x.toFixed(1)}" cy="${yFor(v).toFixed(1)}" r="5" fill="${s.color}">
+              <title>${s.name} · ${played[j].home.code}-${played[j].away.code}: ${v} pts</title></circle>`;
     });
   });
+  svg += `</g>`;
   document.getElementById("chart").innerHTML = svg;
 
   // slider: solo si hay más partidos que la ventana
@@ -282,8 +294,9 @@ function renderChart() {
     const range = document.getElementById("chartRange");
     range.max = maxOffset;
     range.value = off;
-    document.getElementById("chartRangeLabel").textContent =
-      `Partidos ${off + 1}–${off + win} de ${n}`;
+    const start = Math.min(Math.round(off) + 1, n);
+    const end = Math.min(Math.round(off) + win, n);
+    document.getElementById("chartRangeLabel").textContent = `Partidos ${start}–${end} de ${n}`;
   } else {
     slider.style.display = "none";
   }
@@ -484,10 +497,12 @@ document.querySelectorAll(".seg-btn").forEach(btn => {
 /* ---------- Buscador ---------- */
 document.getElementById("search").addEventListener("input", e => renderMatches(e.target.value));
 
-/* ---------- Slider del gráfico ---------- */
+/* ---------- Slider del gráfico (deslizamiento suave) ---------- */
+let chartRaf = null;
 document.getElementById("chartRange").addEventListener("input", e => {
   chartOffset = +e.target.value;
-  renderChart();
+  if (chartRaf) return;
+  chartRaf = requestAnimationFrame(() => { chartRaf = null; renderChart(); });
 });
 
 /* ---------- Tema claro / oscuro ---------- */
