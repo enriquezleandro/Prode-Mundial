@@ -142,6 +142,15 @@ const matches = [
       "Ezequiel Villalba": [1, 2], "Facundo Stij": [0, 2], "leandro enriquez": [1, 2],
       "Arturo Fabian Krauchuka": [2, 1], "José Pahr": [0, 2], "Sergio Villar": [1, 2]
     }
+  },
+  {
+    home: { code: "IRN", name: "Irán", iso: "ir" },
+    away: { code: "NZL", name: "Nueva Zelanda", iso: "nz" },
+    result: [2, 2],
+    predictions: {
+      "Arturo Fabian Krauchuka": [1, 1], "Ezequiel Villalba": [1, 0], "Facundo Stij": [2, 0],
+      "leandro enriquez": [2, 0], "José Pahr": [0, 1], "Sergio Villar": [0, 1]
+    }
   }
 ];
 
