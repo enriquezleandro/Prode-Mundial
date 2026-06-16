@@ -222,13 +222,22 @@ function renderProgress() {
 }
 
 /* ---------- Gráfico de evolución ---------- */
+const CHART_WINDOW = 8;   // partidos visibles a la vez
+let chartOffset = null;   // desde qué partido arranca la ventana (null = últimos)
+
 function renderChart() {
   const played = matches.filter(m => m.result !== null);
   const n = played.length;
+  const win = Math.min(n, CHART_WINDOW);
+  const maxOffset = Math.max(0, n - win);
+  if (chartOffset === null || chartOffset > maxOffset) chartOffset = maxOffset; // por defecto, los últimos
+  const off = chartOffset;
+
   const W = 1000, H = 560, padL = 46, padR = 24, padT = 24, padB = 46;
   const plotW = W - padL - padR, plotH = H - padT - padB;
-  const xStep = n > 1 ? plotW / (n - 1) : 0;
+  const xStep = win > 1 ? plotW / (win - 1) : 0;
 
+  // serie acumulada sobre TODOS los partidos jugados (para que el acumulado sea correcto)
   const series = PARTICIPANTS.map(p => {
     let acc = 0;
     const pts = played.map(m => { acc += pointsFor(m.predictions[p.name], m.result); return acc; });
@@ -239,6 +248,7 @@ function renderChart() {
   const maxY = Math.ceil(maxData / 2) * 2;
   const xFor = i => padL + i * xStep;
   const yFor = v => padT + plotH - (v / maxY) * plotH;
+  const visMatches = played.slice(off, off + win);
 
   let svg = "";
   for (let v = 0; v <= maxY; v += 2) {
@@ -247,23 +257,36 @@ function renderChart() {
     svg += `<text x="${padL - 10}" y="${y + 4}" text-anchor="end">${v}</text>`;
   }
   svg += `<line class="axis" x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT + plotH}"/>`;
-  played.forEach((m, i) => {
+  visMatches.forEach((m, i) => {
     svg += `<text x="${xFor(i)}" y="${H - padB + 26}" text-anchor="middle" font-size="12">${m.home.code}-${m.away.code}</text>`;
   });
   series.forEach(s => {
     if (!visible[s.name]) return;
-    const coords = s.pts.map((v, i) => [xFor(i), yFor(v)]);
+    const coords = s.pts.slice(off, off + win).map((v, i) => [xFor(i), yFor(v)]);
     svg += `<path d="${smoothPath(coords)}" fill="none" stroke="${s.color}" stroke-width="3"
             stroke-linejoin="round" stroke-linecap="round"/>`;
   });
   series.forEach(s => {
     if (!visible[s.name]) return;
-    s.pts.forEach((v, i) => {
+    s.pts.slice(off, off + win).forEach((v, i) => {
       svg += `<circle cx="${xFor(i)}" cy="${yFor(v)}" r="5" fill="${s.color}">
-              <title>${s.name} · ${played[i].home.code}-${played[i].away.code}: ${v} pts</title></circle>`;
+              <title>${s.name} · ${visMatches[i].home.code}-${visMatches[i].away.code}: ${v} pts</title></circle>`;
     });
   });
   document.getElementById("chart").innerHTML = svg;
+
+  // slider: solo si hay más partidos que la ventana
+  const slider = document.getElementById("chartSlider");
+  if (n > CHART_WINDOW) {
+    slider.style.display = "";
+    const range = document.getElementById("chartRange");
+    range.max = maxOffset;
+    range.value = off;
+    document.getElementById("chartRangeLabel").textContent =
+      `Partidos ${off + 1}–${off + win} de ${n}`;
+  } else {
+    slider.style.display = "none";
+  }
 }
 
 /* ---------- Leyenda con toggles ---------- */
@@ -460,6 +483,12 @@ document.querySelectorAll(".seg-btn").forEach(btn => {
 
 /* ---------- Buscador ---------- */
 document.getElementById("search").addEventListener("input", e => renderMatches(e.target.value));
+
+/* ---------- Slider del gráfico ---------- */
+document.getElementById("chartRange").addEventListener("input", e => {
+  chartOffset = +e.target.value;
+  renderChart();
+});
 
 /* ---------- Tema claro / oscuro ---------- */
 const themeBtn = document.getElementById("themeBtn");
