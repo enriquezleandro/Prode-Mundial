@@ -187,6 +187,15 @@ const matches = [
       "Ezequiel Villalba": [2, 0], "Facundo Stij": [3, 0], "José Pahr": [1, 0],
       "Arturo Fabian Krauchuka": [0, 1], "Sergio Villar": [0, 0], "leandro enriquez": null
     }
+  },
+  {
+    home: { code: "POR", name: "Portugal", iso: "pt" },
+    away: { code: "COD", name: "RD Congo", iso: "cd" },
+    result: [1, 1],
+    predictions: {
+      "Ezequiel Villalba": [5, 0], "Facundo Stij": [2, 0], "leandro enriquez": [3, 1],
+      "Arturo Fabian Krauchuka": [2, 0], "José Pahr": [2, 0], "Sergio Villar": [3, 1]
+    }
   }
 ];
 
