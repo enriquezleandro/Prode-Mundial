@@ -160,6 +160,15 @@ const matches = [
       "Facundo Stij": [3, 1], "leandro enriquez": [3, 1], "Ezequiel Villalba": [2, 1],
       "Arturo Fabian Krauchuka": [3, 0], "José Pahr": [2, 0], "Sergio Villar": [2, 0]
     }
+  },
+  {
+    home: { code: "IRQ", name: "Irak", iso: "iq" },
+    away: { code: "NOR", name: "Noruega", iso: "no" },
+    result: [1, 4],
+    predictions: {
+      "Ezequiel Villalba": [0, 2], "Facundo Stij": [0, 2], "leandro enriquez": [1, 2],
+      "Arturo Fabian Krauchuka": [0, 1], "Sergio Villar": [0, 1], "José Pahr": [0, 0]
+    }
   }
 ];
 
