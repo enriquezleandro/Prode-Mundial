@@ -178,6 +178,15 @@ const matches = [
       "leandro enriquez": [3, 0], "Ezequiel Villalba": [3, 1], "Facundo Stij": [2, 0],
       "Arturo Fabian Krauchuka": [4, 0], "José Pahr": [2, 0], "Sergio Villar": [3, 1]
     }
+  },
+  {
+    home: { code: "AUT", name: "Austria", iso: "at" },
+    away: { code: "JOR", name: "Jordania", iso: "jo" },
+    result: [3, 1],
+    predictions: {
+      "Ezequiel Villalba": [2, 0], "Facundo Stij": [3, 0], "José Pahr": [1, 0],
+      "Arturo Fabian Krauchuka": [0, 1], "Sergio Villar": [0, 0], "leandro enriquez": null
+    }
   }
 ];
 
