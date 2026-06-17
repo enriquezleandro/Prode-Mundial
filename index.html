@@ -37,13 +37,14 @@
 <div class="wrap">
   <div class="tabs">
     <div class="segmented">
-      <button class="seg-btn active" data-view="estadisticas">Estadísticas</button>
+      <button class="seg-btn active" data-view="personales">Personales</button>
+      <button class="seg-btn" data-view="generales">Generales</button>
       <button class="seg-btn" data-view="partidos">Partidos</button>
     </div>
   </div>
 
-  <!-- ===== ESTADÍSTICAS ===== -->
-  <div class="view active" id="view-estadisticas">
+  <!-- ===== ESTADÍSTICAS PERSONALES ===== -->
+  <div class="view active" id="view-personales">
     <section>
       <h2 class="section-title">Evolución de puntos acumulados</h2>
       <div class="chart-card">
@@ -59,6 +60,33 @@
     <section>
       <h2 class="section-title">Tabla de posiciones</h2>
       <div class="leaderboard" id="leaderboard"></div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Calidad de pronósticos</h2>
+      <p class="section-desc">Cómo se reparten los pronósticos de cada uno: plenos (resultado exacto, 3 pts), solo ganador (1 pt) y los que no sumaron.</p>
+      <div class="region-card" id="qualityCard"></div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Quién arriesga más</h2>
+      <p class="section-desc">Sumamos los goles de los dos equipos en cada pronóstico (ej: poner 3-1 son 4 goles) y sacamos el promedio por partido. Cuanto más alto, más apuesta a partidos goleadores; cuanto más bajo, más cauto y a resultados ajustados.</p>
+      <div class="region-card" id="riskCard"></div>
+    </section>
+  </div>
+
+  <!-- ===== ESTADÍSTICAS GENERALES ===== -->
+  <div class="view" id="view-generales">
+    <section>
+      <h2 class="section-title">Selecciones con más goles</h2>
+      <p class="section-desc">Total de goles convertidos por cada selección en los partidos jugados. Top 10 del torneo.</p>
+      <div class="region-card" id="scorersCard"></div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Partidos ganados por región</h2>
+      <p class="section-desc">De qué continente es el ganador de cada partido (los empates van aparte), sobre el total jugado.</p>
+      <div class="region-card" id="regionCard"></div>
     </section>
   </div>
 

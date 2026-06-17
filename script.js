@@ -209,6 +209,51 @@ const PARTICIPANTS = [
   { name: "Sergio Villar",            color: "#e08a1e" }
 ];
 
+/* Nombre corto para mostrar en toda la web (la clave interna sigue siendo el nombre completo) */
+const NICK = {
+  "leandro enriquez": "Leandro",
+  "Facundo Stij": "Facundo",
+  "José Pahr": "José",
+  "Arturo Fabian Krauchuka": "Arturo",
+  "Ezequiel Villalba": "Ezequiel",
+  "Sergio Villar": "Sergio"
+};
+function nick(name) { return NICK[name] || name; }
+
+/* Región/continente de cada país (por código). Al agregar países nuevos,
+   sumá su código acá para que entren en el gráfico de regiones. */
+const REGIONS = {
+  // América
+  MEX: "América", USA: "América", CAN: "América", PAR: "América", BRA: "América",
+  HAI: "América", CUW: "América", ECU: "América", URU: "América", ARG: "América",
+  // Europa
+  CZE: "Europa", BIH: "Europa", SUI: "Europa", SCO: "Europa", TUR: "Europa",
+  GER: "Europa", NED: "Europa", SWE: "Europa", ESP: "Europa", BEL: "Europa",
+  FRA: "Europa", NOR: "Europa", AUT: "Europa", POR: "Europa",
+  // África
+  RSA: "África", MAR: "África", CIV: "África", TUN: "África", CPV: "África",
+  EGY: "África", SEN: "África", ALG: "África", COD: "África",
+  // Asia
+  KOR: "Asia", JPN: "Asia",
+  // Medio Oriente
+  QAT: "Medio Oriente", KSA: "Medio Oriente", IRN: "Medio Oriente", IRQ: "Medio Oriente", JOR: "Medio Oriente",
+  // Oceanía
+  AUS: "Oceanía", NZL: "Oceanía"
+};
+
+/* Orden y color de cada región en el gráfico de torta */
+const REGION_META = [
+  { key: "América",       color: "#3b82f6" },
+  { key: "Europa",        color: "#ef4444" },
+  { key: "África",        color: "#f59e0b" },
+  { key: "Asia",          color: "#8b5cf6" },
+  { key: "Medio Oriente", color: "#a3724f" },
+  { key: "Oceanía",       color: "#10b981" },
+  { key: "Empates",       color: "#9ca3af" }
+];
+
+function regionOf(team) { return REGIONS[team.code] || "Otros"; }
+
 /* ============================================================
    LÓGICA
    ============================================================ */
@@ -335,7 +380,7 @@ function renderChart() {
       const x = xFor(j);
       if (!inView(x)) return;
       svg += `<circle cx="${x.toFixed(1)}" cy="${yFor(v).toFixed(1)}" r="5" fill="${s.color}">
-              <title>${s.name} · ${played[j].home.code}-${played[j].away.code}: ${v} pts</title></circle>`;
+              <title>${nick(s.name)} · ${played[j].home.code}-${played[j].away.code}: ${v} pts</title></circle>`;
     });
   });
   svg += `</g>`;
@@ -361,7 +406,7 @@ function renderLegend() {
   const el = document.getElementById("legend");
   el.innerHTML = PARTICIPANTS.map(p => `
     <span class="legend-chip ${visible[p.name] ? "" : "off"}" data-name="${p.name}">
-      <span class="dot" style="background:${p.color}"></span>${p.name}
+      <span class="dot" style="background:${p.color}"></span>${nick(p.name)}
     </span>
   `).join("");
   el.querySelectorAll(".legend-chip").forEach(chip => {
@@ -410,7 +455,7 @@ function renderLeaderboard() {
   document.getElementById("leaderboard").innerHTML = totals.map(t => `
     <div class="lb-row ${medal[t.rank] || ""}">
       <div class="lb-rank">${t.rank}</div>
-      <div class="lb-name">${t.name}</div>
+      <div class="lb-name">${nick(t.name)}</div>
       <div class="lb-stats">
         <div class="stat"><span class="stat-num c-full">${t.full}</span><span class="stat-lbl">Pleno</span></div>
         <div class="stat"><span class="stat-num c-win">${t.winner}</span><span class="stat-lbl">Ganador</span></div>
@@ -438,12 +483,12 @@ function renderFooter() {
   const leaderCard = leaders.length > 1
     ? `<div class="foot-card">
         <div class="fc-lbl">Líderes (empate)</div>
-        <div class="fc-val">${leaders.map(l => l.name).join(" · ")}</div>
+        <div class="fc-val">${leaders.map(l => nick(l.name)).join(" · ")}</div>
         <div class="fc-sub">${top.pts} pts · ${top.full} plenos</div>
       </div>`
     : `<div class="foot-card">
         <div class="fc-lbl">Líder</div>
-        <div class="fc-val">${top.name}</div>
+        <div class="fc-val">${nick(top.name)}</div>
         <div class="fc-sub">${top.pts} pts · ${top.full} plenos</div>
       </div>`;
 
@@ -475,6 +520,129 @@ function renderFooter() {
       Prode Mundial · 3 pts resultado exacto · 1 pt acertar ganador · 0 el resto<br>
       Actualizado al ${ULTIMA_ACTUALIZACION}
     </div>`;
+}
+
+/* ---------- Donut: partidos ganados por región ---------- */
+function renderRegions() {
+  const played = matches.filter(m => m.result !== null);
+  const total = played.length;
+  const card = document.getElementById("regionCard");
+
+  const counts = {};
+  REGION_META.forEach(r => counts[r.key] = 0);
+  played.forEach(m => {
+    const [h, a] = m.result;
+    if (h === a) { counts["Empates"]++; return; }
+    const winner = h > a ? m.home : m.away;
+    const key = regionOf(winner);
+    counts[key] = (counts[key] || 0) + 1;
+  });
+
+  if (total === 0) { card.innerHTML = `<p class="muted" style="padding:18px;text-align:center;">Sin partidos jugados todavía.</p>`; return; }
+
+  // barras horizontales, ordenadas de mayor a menor; largo = % del total jugado
+  const rows = REGION_META.filter(r => counts[r.key] > 0)
+    .sort((a, b) => counts[b.key] - counts[a.key]);
+
+  card.innerHTML = rows.map(s => {
+    const c = counts[s.key];
+    const pct = c / total * 100;
+    return `<div class="bar-row">
+        <span class="bar-name">${s.key}</span>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct.toFixed(1)}%;background:${s.color}"></div></div>
+        <span class="bar-val">${c}</span>
+        <span class="bar-pct">${pct.toFixed(0)}%</span>
+      </div>`;
+  }).join("");
+}
+
+/* ---------- Barras: top 10 selecciones más goleadoras ---------- */
+function renderScorers() {
+  const tally = {};
+  matches.forEach(m => {
+    if (!m.result) return;
+    const [h, a] = m.result;
+    [[m.home, h], [m.away, a]].forEach(([team, g]) => {
+      if (!tally[team.code]) tally[team.code] = { name: team.name, iso: team.iso, goals: 0 };
+      tally[team.code].goals += g;
+    });
+  });
+
+  const list = Object.values(tally)
+    .sort((a, b) => b.goals - a.goals || a.name.localeCompare(b.name))
+    .slice(0, 10);
+
+  const card = document.getElementById("scorersCard");
+  if (!list.length) { card.innerHTML = `<p class="muted" style="padding:18px;text-align:center;">Sin goles todavía.</p>`; return; }
+
+  const max = list[0].goals || 1;
+  card.innerHTML = list.map(t => {
+    const w = t.goals / max * 100;
+    return `<div class="bar-row">
+        <div class="bar-lead">
+          <img class="bar-flag" src="${flagSrc(t.iso, "w40")}" alt="" loading="lazy" onerror="this.style.display='none'">
+          <span class="bar-name">${t.name}</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${w.toFixed(1)}%;background:#3b82f6"></div></div>
+        <span class="bar-val">${t.goals}</span>
+      </div>`;
+  }).join("");
+}
+
+/* ---------- Calidad de pronósticos (barra apilada por persona) ---------- */
+function renderQuality() {
+  const totals = computeStandings(); // ya ordenado por posición
+  const legend = `<div class="qual-legend">
+      <span><i style="background:var(--green)"></i>Pleno</span>
+      <span><i style="background:var(--accent)"></i>Ganador</span>
+      <span><i style="background:var(--silver)"></i>Sin acertar</span>
+    </div>`;
+  const rows = totals.map(t => {
+    const tot = (t.full + t.winner + t.miss) || 1;
+    const seg = (n, color, lbl) => n
+      ? `<div class="qual-seg" style="width:${(n / tot * 100).toFixed(2)}%;background:${color}" title="${lbl}: ${n}"></div>`
+      : "";
+    return `<div class="qual-row">
+        <span class="bar-name">${nick(t.name)}</span>
+        <div class="qual-track">
+          ${seg(t.full, "var(--green)", "Pleno")}
+          ${seg(t.winner, "var(--accent)", "Ganador")}
+          ${seg(t.miss, "var(--silver)", "Sin acertar")}
+        </div>
+      </div>`;
+  }).join("");
+  document.getElementById("qualityCard").innerHTML = legend + rows;
+}
+
+/* ---------- Quién arriesga más (promedio de goles pronosticados) ---------- */
+function renderRisk() {
+  const list = PARTICIPANTS.map(p => {
+    let sum = 0, cnt = 0;
+    matches.forEach(m => {
+      if (!m.result) return;
+      const pred = m.predictions[p.name];
+      if (!pred) return;
+      sum += pred[0] + pred[1];
+      cnt++;
+    });
+    return { name: p.name, avg: cnt ? sum / cnt : 0 };
+  }).sort((a, b) => b.avg - a.avg);
+
+  const card = document.getElementById("riskCard");
+  const max = list[0] && list[0].avg ? list[0].avg : 1;
+  const rows = list.map((t, i) => {
+    const w = t.avg / max * 100;
+    let tag = "";
+    if (i === 0) tag = `<span class="risk-tag hot">más arriesgado</span>`;
+    else if (i === list.length - 1) tag = `<span class="risk-tag cold">más cauto</span>`;
+    return `<div class="bar-row">
+        <div class="risk-lead"><span class="risk-name">${nick(t.name)}</span>${tag}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${w.toFixed(1)}%;background:#f59e0b"></div></div>
+        <span class="bar-val">${t.avg.toFixed(1)}<span class="bar-unit">goles/part.</span></span>
+      </div>`;
+  }).join("");
+  card.innerHTML = rows +
+    `<p class="region-foot">Mide los goles totales que predice cada uno por partido. Barra más larga = arriesga más goles; más corta = juega a lo seguro.</p>`;
 }
 
 /* ---------- Tarjetas de partidos ---------- */
@@ -511,7 +679,7 @@ function renderMatches(filter = "") {
           const predTxt = pred ? `${pred[0]} - ${pred[1]}` : "—";
           let cls = "pill" + (pts === 3 ? " win" : pts === 1 ? " partial" : "");
           return `<tr>
-            <td class="name">${name}</td>
+            <td class="name">${nick(name)}</td>
             <td class="pred ${pred ? "" : "muted"}">${predTxt}</td>
             <td class="pts"><span class="${cls}">${pts}</span></td>
           </tr>`;
@@ -580,5 +748,9 @@ renderProgress();
 renderLegend();
 renderChart();
 renderLeaderboard();
+renderScorers();
+renderRegions();
+renderQuality();
+renderRisk();
 renderMatches();
 renderFooter();
