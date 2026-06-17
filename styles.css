@@ -301,6 +301,11 @@ section { margin-top: 32px; }
 .score .status { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
 .score.pending .nums { color: var(--text-secondary); }
 
+.match-venue {
+  text-align: center; font-size: 12.5px; color: var(--text-secondary);
+  padding: 0 20px 16px; margin-top: -6px;
+}
+
 table { width: 100%; border-collapse: collapse; }
 thead th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); font-weight: 600; text-align: left; padding: 11px 22px; background: var(--card-2); border-top: 1px solid var(--border); }
 thead th.center { text-align: center; }

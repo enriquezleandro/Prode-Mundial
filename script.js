@@ -721,7 +721,9 @@ function renderMatches(filter = "") {
 
   // orden invertido: el último partido cargado aparece primero
   [...matches].reverse().forEach(m => {
-    const haystack = [m.home.code, m.away.code, m.home.name, m.away.name].join(" ").toLowerCase();
+    const v = m.venue;
+    const haystack = [m.home.code, m.away.code, m.home.name, m.away.name,
+      v ? `${v.stadium} ${v.city} ${v.country}` : ""].join(" ").toLowerCase();
     if (q && !haystack.includes(q)) return;
     shown++;
 
@@ -754,6 +756,7 @@ function renderMatches(filter = "") {
           <div class="score ${played ? "" : "pending"}"><div class="nums">${scoreTxt}</div><div class="status">${statusTxt}</div></div>
           ${teamBlock(m.away)}
         </div>
+        ${v ? `<div class="match-venue">${v.stadium} · ${v.city}, ${v.country}</div>` : ""}
         <table>
           <thead><tr><th>Participante</th><th class="center">Pronóstico</th><th class="center">Pts</th></tr></thead>
           <tbody>${rows}</tbody>
