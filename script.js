@@ -254,6 +254,25 @@ const REGION_META = [
 
 function regionOf(team) { return REGIONS[team.code] || "Otros"; }
 
+/* Religión predominante (aproximada, histórica/cultural) de cada país.
+   Solo se usa para la curiosidad "Cristianismo vs Islam". "Otro" = no aplica. */
+const RELIGION = {
+  // Cristianismo
+  MEX: "Cristianismo", RSA: "Cristianismo", CZE: "Cristianismo", CAN: "Cristianismo",
+  USA: "Cristianismo", PAR: "Cristianismo", SUI: "Cristianismo", BRA: "Cristianismo",
+  HAI: "Cristianismo", SCO: "Cristianismo", AUS: "Cristianismo", GER: "Cristianismo",
+  CUW: "Cristianismo", NED: "Cristianismo", ECU: "Cristianismo", SWE: "Cristianismo",
+  ESP: "Cristianismo", CPV: "Cristianismo", BEL: "Cristianismo", URU: "Cristianismo",
+  NZL: "Cristianismo", FRA: "Cristianismo", NOR: "Cristianismo", ARG: "Cristianismo",
+  AUT: "Cristianismo", POR: "Cristianismo", COD: "Cristianismo",
+  // Islam
+  BIH: "Islam", QAT: "Islam", MAR: "Islam", TUR: "Islam", CIV: "Islam", TUN: "Islam",
+  EGY: "Islam", KSA: "Islam", IRN: "Islam", SEN: "Islam", IRQ: "Islam", ALG: "Islam", JOR: "Islam",
+  // Otro (ni mayoría cristiana ni musulmana)
+  KOR: "Otro", JPN: "Otro"
+};
+function religionOf(team) { return RELIGION[team.code] || "Otro"; }
+
 /* ============================================================
    LÓGICA
    ============================================================ */
@@ -589,6 +608,46 @@ function renderScorers() {
   }).join("");
 }
 
+/* ---------- Cristianismo vs Islam (tira y afloje de victorias) ---------- */
+function renderFaith() {
+  const card = document.getElementById("faithCard");
+  const played = matches.filter(m => m.result !== null);
+
+  // % de partidos ganados por los equipos de cada religión (métrica justa)
+  let cWins = 0, cApp = 0, iWins = 0, iApp = 0;
+  played.forEach(m => {
+    const [h, a] = m.result;
+    [[m.home, h > a], [m.away, a > h]].forEach(([t, won]) => {
+      const r = religionOf(t);
+      if (r === "Cristianismo") { cApp++; if (won) cWins++; }
+      else if (r === "Islam") { iApp++; if (won) iWins++; }
+    });
+  });
+
+  if (cApp === 0 && iApp === 0) { card.innerHTML = `<p class="muted" style="padding:18px;text-align:center;">Todavía no hay partidos para comparar.</p>`; return; }
+
+  const cRate = cApp ? cWins / cApp * 100 : 0;
+  const iRate = iApp ? iWins / iApp * 100 : 0;
+  const denom = (cRate + iRate) || 1;
+  const cShare = cRate / denom * 100;
+  const iShare = iRate / denom * 100;
+
+  card.innerHTML = `
+    <div class="faith-head">
+      <div class="faith-side"><span class="faith-name">Cristianismo</span><span class="faith-count" style="color:#2563eb">${cRate.toFixed(0)}%</span></div>
+      <div class="faith-side right"><span class="faith-name">Islam</span><span class="faith-count" style="color:#16a34a">${iRate.toFixed(0)}%</span></div>
+    </div>
+    <div class="faith-bar">
+      <div class="faith-fill" style="width:${cShare.toFixed(1)}%;background:#2563eb"></div>
+      <div class="faith-fill" style="width:${iShare.toFixed(1)}%;background:#16a34a"></div>
+      <div class="faith-center"></div>
+    </div>
+    <p class="region-foot">
+      Para que sea justo (hay más países cristianos que musulmanes), comparamos el <b>% de partidos ganados</b> por los equipos de cada religión, no el total.
+      Cristianismo: ${cWins} de ${cApp} jugados · Islam: ${iWins} de ${iApp}. Los empates no cuentan como victoria. Clasificación aproximada, solo por diversión.
+    </p>`;
+}
+
 /* ---------- Calidad de pronósticos (barra apilada por persona) ---------- */
 function renderQuality() {
   const totals = computeStandings(); // ya ordenado por posición
@@ -750,6 +809,7 @@ renderChart();
 renderLeaderboard();
 renderScorers();
 renderRegions();
+renderFaith();
 renderQuality();
 renderRisk();
 renderMatches();

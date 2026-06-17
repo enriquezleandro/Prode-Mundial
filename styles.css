@@ -261,6 +261,22 @@ section { margin-top: 32px; }
   .bar-lead { width: 120px; }
 }
 
+/* ---------- Cristianismo vs Islam (tira y afloje) ---------- */
+.faith-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 12px; }
+.faith-side { display: flex; flex-direction: column; gap: 2px; }
+.faith-side.right { align-items: flex-end; text-align: right; }
+.faith-name { font-size: 14px; font-weight: 600; }
+.faith-count { font-family: var(--sport); font-size: 28px; font-weight: 700; line-height: 1; }
+.faith-bar {
+  position: relative; height: 30px; border-radius: 9px; overflow: hidden;
+  display: flex; background: var(--card-2); border: 1px solid var(--border);
+}
+.faith-fill { height: 100%; }
+.faith-center {
+  position: absolute; left: 50%; top: -1px; bottom: -1px; width: 2px;
+  transform: translateX(-1px); background: var(--text); opacity: 0.45;
+}
+
 /* ---------- Search ---------- */
 .search-box { position: relative; margin-bottom: 22px; }
 .search-box input {
