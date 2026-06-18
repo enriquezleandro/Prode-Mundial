@@ -196,6 +196,33 @@ const matches = [
       "Ezequiel Villalba": [5, 0], "Facundo Stij": [2, 0], "leandro enriquez": [3, 1],
       "Arturo Fabian Krauchuka": [2, 0], "José Pahr": [2, 0], "Sergio Villar": [3, 1]
     }
+  },
+  {
+    home: { code: "ENG", name: "Inglaterra", iso: "gb-eng" },
+    away: { code: "CRO", name: "Croacia", iso: "hr" },
+    result: [4, 2],
+    predictions: {
+      "Ezequiel Villalba": [2, 1], "Facundo Stij": [2, 1], "leandro enriquez": [1, 0],
+      "José Pahr": [1, 0], "Arturo Fabian Krauchuka": [1, 2], "Sergio Villar": [2, 2]
+    }
+  },
+  {
+    home: { code: "GHA", name: "Ghana", iso: "gh" },
+    away: { code: "PAN", name: "Panamá", iso: "pa" },
+    result: [1, 0],
+    predictions: {
+      "Arturo Fabian Krauchuka": [2, 0], "Ezequiel Villalba": [1, 1], "Facundo Stij": [1, 2],
+      "leandro enriquez": [1, 2], "José Pahr": [1, 2], "Sergio Villar": [0, 1]
+    }
+  },
+  {
+    home: { code: "UZB", name: "Uzbekistán", iso: "uz" },
+    away: { code: "COL", name: "Colombia", iso: "co" },
+    result: [1, 3],
+    predictions: {
+      "Ezequiel Villalba": [1, 2], "Facundo Stij": [0, 2], "leandro enriquez": [0, 1],
+      "Arturo Fabian Krauchuka": [1, 2], "José Pahr": [0, 1], "Sergio Villar": [1, 2]
+    }
   }
 ];
 
@@ -226,15 +253,16 @@ const REGIONS = {
   // América
   MEX: "América", USA: "América", CAN: "América", PAR: "América", BRA: "América",
   HAI: "América", CUW: "América", ECU: "América", URU: "América", ARG: "América",
+  PAN: "América", COL: "América",
   // Europa
   CZE: "Europa", BIH: "Europa", SUI: "Europa", SCO: "Europa", TUR: "Europa",
   GER: "Europa", NED: "Europa", SWE: "Europa", ESP: "Europa", BEL: "Europa",
-  FRA: "Europa", NOR: "Europa", AUT: "Europa", POR: "Europa",
+  FRA: "Europa", NOR: "Europa", AUT: "Europa", POR: "Europa", ENG: "Europa", CRO: "Europa",
   // África
   RSA: "África", MAR: "África", CIV: "África", TUN: "África", CPV: "África",
-  EGY: "África", SEN: "África", ALG: "África", COD: "África",
+  EGY: "África", SEN: "África", ALG: "África", COD: "África", GHA: "África",
   // Asia
-  KOR: "Asia", JPN: "Asia",
+  KOR: "Asia", JPN: "Asia", UZB: "Asia",
   // Medio Oriente
   QAT: "Medio Oriente", KSA: "Medio Oriente", IRN: "Medio Oriente", IRQ: "Medio Oriente", JOR: "Medio Oriente",
   // Oceanía
@@ -265,9 +293,11 @@ const RELIGION = {
   ESP: "Cristianismo", CPV: "Cristianismo", BEL: "Cristianismo", URU: "Cristianismo",
   NZL: "Cristianismo", FRA: "Cristianismo", NOR: "Cristianismo", ARG: "Cristianismo",
   AUT: "Cristianismo", POR: "Cristianismo", COD: "Cristianismo",
+  ENG: "Cristianismo", CRO: "Cristianismo", GHA: "Cristianismo", PAN: "Cristianismo", COL: "Cristianismo",
   // Islam
   BIH: "Islam", QAT: "Islam", MAR: "Islam", TUR: "Islam", CIV: "Islam", TUN: "Islam",
   EGY: "Islam", KSA: "Islam", IRN: "Islam", SEN: "Islam", IRQ: "Islam", ALG: "Islam", JOR: "Islam",
+  UZB: "Islam",
   // Otro (ni mayoría cristiana ni musulmana)
   KOR: "Otro", JPN: "Otro"
 };
