@@ -812,7 +812,6 @@ renderChart();
 renderLeaderboard();
 renderScorers();
 renderRegions();
-renderFaith();
 renderQuality();
 renderRisk();
 renderMatches();
