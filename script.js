@@ -286,6 +286,15 @@ const matches = [
       "Ezequiel Villalba": [3, 0], "Facundo Stij": [3, 0], "leandro enriquez": [3, 0],
       "José Pahr": [3, 0], "Arturo Fabian Krauchuka": [3, 1], "Sergio Villar": [1, 1]
     }
+  },
+  {
+    home: { code: "TUR", name: "Turquía", iso: "tr" },
+    away: { code: "PAR", name: "Paraguay", iso: "py" },
+    result: [0, 1],
+    predictions: {
+      "Arturo Fabian Krauchuka": [0, 2], "José Pahr": [0, 2], "Sergio Villar": [1, 2],
+      "Ezequiel Villalba": [2, 1], "Facundo Stij": [2, 1], "leandro enriquez": [2, 0]
+    }
   }
 ];
 
