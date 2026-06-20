@@ -277,6 +277,15 @@ const matches = [
       "Facundo Stij": [0, 1], "Arturo Fabian Krauchuka": [0, 1], "Ezequiel Villalba": [1, 3],
       "Sergio Villar": [1, 2], "leandro enriquez": [2, 1], "José Pahr": [2, 1]
     }
+  },
+  {
+    home: { code: "BRA", name: "Brasil", iso: "br" },
+    away: { code: "HAI", name: "Haití", iso: "ht" },
+    result: [3, 0],
+    predictions: {
+      "Ezequiel Villalba": [3, 0], "Facundo Stij": [3, 0], "leandro enriquez": [3, 0],
+      "José Pahr": [3, 0], "Arturo Fabian Krauchuka": [3, 1], "Sergio Villar": [1, 1]
+    }
   }
 ];
 
