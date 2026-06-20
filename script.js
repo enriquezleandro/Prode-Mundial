@@ -304,6 +304,15 @@ const matches = [
       "Ezequiel Villalba": [2, 1], "leandro enriquez": [3, 1], "Arturo Fabian Krauchuka": [2, 0],
       "José Pahr": [2, 0], "Facundo Stij": null, "Sergio Villar": null
     }
+  },
+  {
+    home: { code: "GER", name: "Alemania", iso: "de" },
+    away: { code: "CIV", name: "Costa de Marfil", iso: "ci" },
+    result: [2, 1],
+    predictions: {
+      "Ezequiel Villalba": [2, 1], "Facundo Stij": [3, 1], "leandro enriquez": [4, 1],
+      "Arturo Fabian Krauchuka": [3, 1], "José Pahr": [2, 0], "Sergio Villar": [5, 0]
+    }
   }
 ];
 
