@@ -426,6 +426,12 @@ function renderProgress() {
 /* ---------- Gráfico de evolución ---------- */
 const CHART_WINDOW = 8;   // partidos visibles a la vez
 let chartOffset = null;   // desde qué partido arranca la ventana (null = últimos)
+let curYMin = null, curYMax = null;   // escala vertical mostrada (se anima hacia el objetivo)
+let chartRaf = null;
+function scheduleChart() {
+  if (chartRaf) return;
+  chartRaf = requestAnimationFrame(() => { chartRaf = null; renderChart(); });
+}
 
 function renderChart() {
   const played = matches.filter(m => m.result !== null);
@@ -447,18 +453,57 @@ function renderChart() {
     return { ...p, pts, total: acc };
   });
 
-  const maxData = Math.max(10, ...series.map(s => s.total));
-  const maxY = Math.ceil(maxData / 2) * 2;
   const xFor = j => padL + (j - off) * step;          // posición global desplazada por el offset
-  const yFor = v => padT + plotH - (v / maxY) * plotH;
   const inView = x => x >= padL - 0.5 && x <= W - padR + 0.5;
 
+  // --- Auto-escala vertical: el eje Y se ajusta al rango visible en la ventana
+  //     (solo cuenta los participantes prendidos), así las líneas siempre se separan ---
+  function niceStep(raw) {
+    if (raw <= 0) return 1;
+    const p = Math.pow(10, Math.floor(Math.log10(raw)));
+    const f = raw / p;
+    const nf = f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10;
+    return nf * p;
+  }
+  // como el acumulado solo crece, el mínimo visible está en el borde izquierdo de
+  // la ventana y el máximo en el derecho → interpolamos esos bordes (continuo, sin saltos)
+  const valueAt = (pts, idx) => {
+    const i0 = Math.floor(idx), i1 = Math.min(i0 + 1, pts.length - 1);
+    return pts[i0] + (pts[i1] - pts[i0]) * (idx - i0);
+  };
+  const leftIdx = off, rightIdx = Math.min(off + win - 1, n - 1);
+  let dataMin = Infinity, dataMax = -Infinity;
+  series.forEach(s => {
+    if (!visible[s.name]) return;
+    dataMin = Math.min(dataMin, valueAt(s.pts, leftIdx));
+    dataMax = Math.max(dataMax, valueAt(s.pts, rightIdx));
+  });
+  if (!isFinite(dataMin)) { dataMin = 0; dataMax = 10; }   // nada visible
+  if (dataMax - dataMin < 1) { const c = (dataMin + dataMax) / 2; dataMin = c - 1; dataMax = c + 1; }  // rango plano
+  // objetivo CONTINUO (con un poco de aire), sin redondear → sin saltitos de escala
+  const pad = Math.max(0.5, (dataMax - dataMin) * 0.10);
+  const tYMin = Math.max(0, dataMin - pad);
+  const tYMax = dataMax + pad;
+
+  // animación suave: la escala mostrada (cur) se desliza hacia el objetivo
+  if (curYMin === null) { curYMin = tYMin; curYMax = tYMax; }
+  else {
+    const E = 0.2;
+    curYMin += (tYMin - curYMin) * E;
+    curYMax += (tYMax - curYMax) * E;
+    if (Math.abs(curYMin - tYMin) < 0.02 && Math.abs(curYMax - tYMax) < 0.02) { curYMin = tYMin; curYMax = tYMax; }
+  }
+  const settled = (curYMin === tYMin && curYMax === tYMax);
+  const yFor = v => padT + plotH - ((v - curYMin) / (curYMax - curYMin)) * plotH;
+
   let svg = "";
-  // grilla y eje Y (fijos)
-  for (let v = 0; v <= maxY; v += 2) {
+  // grilla y eje Y: marcas "redondas" dentro del rango mostrado, con posición continua
+  const gStep = Math.max(1, niceStep((curYMax - curYMin) / 5));
+  for (let v = Math.ceil(curYMin / gStep) * gStep; v <= curYMax + 1e-9; v += gStep) {
     const y = yFor(v);
-    svg += `<line class="gridline" x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}"/>`;
-    svg += `<text x="${padL - 10}" y="${y + 4}" text-anchor="end">${v}</text>`;
+    if (y < padT - 0.5 || y > padT + plotH + 0.5) continue;
+    svg += `<line class="gridline" x1="${padL}" y1="${y.toFixed(1)}" x2="${W - padR}" y2="${y.toFixed(1)}"/>`;
+    svg += `<text x="${padL - 10}" y="${(y + 4).toFixed(1)}" text-anchor="end">${v}</text>`;
   }
   svg += `<line class="axis" x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT + plotH}"/>`;
 
@@ -502,6 +547,9 @@ function renderChart() {
   } else {
     slider.style.display = "none";
   }
+
+  // seguir animando hasta que la escala llegue al objetivo
+  if (!settled) scheduleChart();
 }
 
 /* ---------- Leyenda con toggles ---------- */
@@ -866,11 +914,9 @@ document.querySelectorAll(".seg-btn").forEach(btn => {
 document.getElementById("search").addEventListener("input", e => renderMatches(e.target.value));
 
 /* ---------- Slider del gráfico (deslizamiento suave) ---------- */
-let chartRaf = null;
 document.getElementById("chartRange").addEventListener("input", e => {
   chartOffset = +e.target.value;
-  if (chartRaf) return;
-  chartRaf = requestAnimationFrame(() => { chartRaf = null; renderChart(); });
+  scheduleChart();
 });
 
 /* ---------- Tema claro / oscuro ---------- */
