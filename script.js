@@ -268,6 +268,15 @@ const matches = [
       "Ezequiel Villalba": [2, 0], "Arturo Fabian Krauchuka": [2, 0], "Sergio Villar": [2, 0],
       "Facundo Stij": [2, 1], "leandro enriquez": [3, 1], "José Pahr": [1, 0]
     }
+  },
+  {
+    home: { code: "SCO", name: "Escocia", iso: "gb-sct" },
+    away: { code: "MAR", name: "Marruecos", iso: "ma" },
+    result: [0, 1],
+    predictions: {
+      "Facundo Stij": [0, 1], "Arturo Fabian Krauchuka": [0, 1], "Ezequiel Villalba": [1, 3],
+      "Sergio Villar": [1, 2], "leandro enriquez": [2, 1], "José Pahr": [2, 1]
+    }
   }
 ];
 
