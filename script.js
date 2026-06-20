@@ -223,6 +223,51 @@ const matches = [
       "Ezequiel Villalba": [1, 2], "Facundo Stij": [0, 2], "leandro enriquez": [0, 1],
       "Arturo Fabian Krauchuka": [1, 2], "José Pahr": [0, 1], "Sergio Villar": [1, 2]
     }
+  },
+  {
+    home: { code: "CZE", name: "Chequia", iso: "cz" },
+    away: { code: "RSA", name: "Sudáfrica", iso: "za" },
+    result: [1, 1],
+    predictions: {
+      "Sergio Villar": [1, 1], "Ezequiel Villalba": [1, 0], "Facundo Stij": [2, 1],
+      "Arturo Fabian Krauchuka": [2, 0], "leandro enriquez": null, "José Pahr": null
+    }
+  },
+  {
+    home: { code: "SUI", name: "Suiza", iso: "ch" },
+    away: { code: "BIH", name: "Bosnia", iso: "ba" },
+    result: [4, 1],
+    predictions: {
+      "Ezequiel Villalba": [2, 1], "Facundo Stij": [2, 0], "leandro enriquez": [1, 0],
+      "José Pahr": [1, 0], "Sergio Villar": [2, 1], "Arturo Fabian Krauchuka": [1, 1]
+    }
+  },
+  {
+    home: { code: "CAN", name: "Canadá", iso: "ca" },
+    away: { code: "QAT", name: "Qatar", iso: "qa" },
+    result: [6, 0],
+    predictions: {
+      "Facundo Stij": [2, 1], "leandro enriquez": [2, 1], "Arturo Fabian Krauchuka": [2, 0],
+      "José Pahr": [2, 1], "Sergio Villar": [2, 0], "Ezequiel Villalba": null
+    }
+  },
+  {
+    home: { code: "MEX", name: "México", iso: "mx" },
+    away: { code: "KOR", name: "Corea", iso: "kr" },
+    result: [1, 0],
+    predictions: {
+      "José Pahr": [1, 0], "leandro enriquez": [3, 2], "Ezequiel Villalba": [2, 2],
+      "Facundo Stij": [1, 1], "Arturo Fabian Krauchuka": [1, 1], "Sergio Villar": [0, 3]
+    }
+  },
+  {
+    home: { code: "USA", name: "Estados Unidos", iso: "us" },
+    away: { code: "AUS", name: "Australia", iso: "au" },
+    result: [2, 0],
+    predictions: {
+      "Ezequiel Villalba": [2, 0], "Arturo Fabian Krauchuka": [2, 0], "Sergio Villar": [2, 0],
+      "Facundo Stij": [2, 1], "leandro enriquez": [3, 1], "José Pahr": [1, 0]
+    }
   }
 ];
 
