@@ -295,6 +295,15 @@ const matches = [
       "Arturo Fabian Krauchuka": [0, 2], "José Pahr": [0, 2], "Sergio Villar": [1, 2],
       "Ezequiel Villalba": [2, 1], "Facundo Stij": [2, 1], "leandro enriquez": [2, 0]
     }
+  },
+  {
+    home: { code: "NED", name: "Países Bajos", iso: "nl" },
+    away: { code: "SWE", name: "Suecia", iso: "se" },
+    result: [5, 1],
+    predictions: {
+      "Ezequiel Villalba": [2, 1], "leandro enriquez": [3, 1], "Arturo Fabian Krauchuka": [2, 0],
+      "José Pahr": [2, 0], "Facundo Stij": null, "Sergio Villar": null
+    }
   }
 ];
 
