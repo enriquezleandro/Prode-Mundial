@@ -313,6 +313,15 @@ const matches = [
       "Ezequiel Villalba": [2, 1], "Facundo Stij": [3, 1], "leandro enriquez": [4, 1],
       "Arturo Fabian Krauchuka": [3, 1], "José Pahr": [2, 0], "Sergio Villar": [5, 0]
     }
+  },
+  {
+    home: { code: "ECU", name: "Ecuador", iso: "ec" },
+    away: { code: "CUW", name: "Curazao", iso: "cw" },
+    result: [0, 0],
+    predictions: {
+      "Ezequiel Villalba": [3, 0], "Facundo Stij": [3, 0], "leandro enriquez": [2, 0],
+      "Arturo Fabian Krauchuka": [4, 0], "José Pahr": [1, 0], "Sergio Villar": [3, 1]
+    }
   }
 ];
 
