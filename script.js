@@ -763,6 +763,15 @@ const matches = [
       "Ezequiel Villalba": [2, 1], "leandro enriquez": [2, 1], "Facundo Stij": [2, 0],
       "Arturo Fabian Krauchuka": [1, 2], "José Pahr": [1, 2], "Sergio Villar": [0, 2]
     }
+  },
+  {
+    home: { code: "SUI", name: "Suiza", iso: "ch" },
+    away: { code: "ALG", name: "Argelia", iso: "dz" },
+    result: [2, 0],
+    predictions: {
+      "leandro enriquez": [2, 0], "Arturo Fabian Krauchuka": [2, 0], "José Pahr": [2, 0],
+      "Sergio Villar": [2, 0], "Facundo Stij": [1, 0], "Ezequiel Villalba": [1, 1]
+    }
   }
 ];
 
