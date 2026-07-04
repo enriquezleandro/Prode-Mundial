@@ -772,6 +772,33 @@ const matches = [
       "leandro enriquez": [2, 0], "Arturo Fabian Krauchuka": [2, 0], "José Pahr": [2, 0],
       "Sergio Villar": [2, 0], "Facundo Stij": [1, 0], "Ezequiel Villalba": [1, 1]
     }
+  },
+  {
+    home: { code: "AUS", name: "Australia", iso: "au" },
+    away: { code: "EGY", name: "Egipto", iso: "eg" },
+    result: [1, 1],
+    predictions: {
+      "Ezequiel Villalba": [1, 2], "Facundo Stij": [2, 1], "leandro enriquez": [1, 2],
+      "José Pahr": [3, 0], "Sergio Villar": [0, 1], "Arturo Fabian Krauchuka": null
+    }
+  },
+  {
+    home: { code: "ARG", name: "Argentina", iso: "ar" },
+    away: { code: "CPV", name: "Cabo Verde", iso: "cv" },
+    result: [3, 2],
+    predictions: {
+      "Ezequiel Villalba": [2, 0], "Facundo Stij": [3, 0], "leandro enriquez": [3, 0],
+      "Arturo Fabian Krauchuka": [1, 0], "José Pahr": [3, 0], "Sergio Villar": [3, 0]
+    }
+  },
+  {
+    home: { code: "COL", name: "Colombia", iso: "co" },
+    away: { code: "GHA", name: "Ghana", iso: "gh" },
+    result: [1, 0],
+    predictions: {
+      "Ezequiel Villalba": [1, 0], "leandro enriquez": [2, 1], "José Pahr": [2, 0],
+      "Sergio Villar": [2, 1], "Facundo Stij": null, "Arturo Fabian Krauchuka": null
+    }
   }
 ];
 
