@@ -880,6 +880,24 @@ const matches = [
       "Facundo Stij": [2, 0], "Sergio Villar": [2, 0], "Ezequiel Villalba": [2, 1],
       "leandro enriquez": [3, 1], "Arturo Fabian Krauchuka": [2, 1], "José Pahr": [2, 1]
     }
+  },
+  {
+    home: { code: "ESP", name: "España", iso: "es" },
+    away: { code: "BEL", name: "Bélgica", iso: "be" },
+    result: [2, 1],
+    predictions: {
+      "Ezequiel Villalba": [2, 1], "Facundo Stij": [2, 1], "leandro enriquez": [2, 1],
+      "Sergio Villar": [2, 1], "Arturo Fabian Krauchuka": [2, 0], "José Pahr": [3, 0]
+    }
+  },
+  {
+    home: { code: "NOR", name: "Noruega", iso: "no" },
+    away: { code: "ENG", name: "Inglaterra", iso: "gb-eng" },
+    result: [1, 2],
+    predictions: {
+      "leandro enriquez": [1, 2], "Facundo Stij": [2, 3], "Arturo Fabian Krauchuka": [0, 1],
+      "Ezequiel Villalba": [1, 1], "José Pahr": [2, 1], "Sergio Villar": [2, 1]
+    }
   }
 ];
 
